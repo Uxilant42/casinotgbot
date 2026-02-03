@@ -15,6 +15,7 @@ from telegram.ext import (
 )
 from config import BOT_TOKEN
 import database as db
+from handlers import cmd_addmoney 
 from handlers import (
     cmd_start,
     cmd_balance,
@@ -49,6 +50,7 @@ def main():
     application.add_handler(CommandHandler('stats', cmd_stats))
     application.add_handler(CommandHandler('top', cmd_top))
     application.add_handler(CommandHandler('daily', cmd_daily))
+    application.add_handler(CommandHandler('addmoney', cmd_addmoney))
 
     # Кнопки главного меню
     application.add_handler(MessageHandler(filters.Regex("^🎰 Слоты$"), handle_slots))
