@@ -249,10 +249,9 @@ async def handle_roulette_choice(update: Update, context: ContextTypes.DEFAULT_T
 
 async def cmd_addmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Добавить деньги (только для админа)"""
-    # Замени на свой user_id (узнай через @userinfobot в Telegram)
-    ADMIN_ID = 1063802362  # ← ВСТАВЬ СВОЙ ID!
+    Blatnoy_Kotak = 1063802362,8325515258
     
-    if update.effective_user.id != ADMIN_ID:
+    if update.effective_user.id != Blatnoy_Kotak:
         await update.message.reply_text("❌ Недостаточно прав!")
         return
     
