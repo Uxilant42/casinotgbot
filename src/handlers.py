@@ -246,6 +246,25 @@ async def handle_roulette_choice(update: Update, context: ContextTypes.DEFAULT_T
         f"💰 Баланс: {new_balance} ({profit:+d})"
     )
 
+
+async def cmd_addmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Добавить деньги (только для админа)"""
+    # Замени на свой user_id (узнай через @userinfobot в Telegram)
+    ADMIN_ID = 1063802362  # ← ВСТАВЬ СВОЙ ID!
+    
+    if update.effective_user.id != ADMIN_ID:
+        await update.message.reply_text("❌ Недостаточно прав!")
+        return
+    
+    try:
+        # /addmoney 10000
+        amount = int(context.args[0])
+        db.update_balance(update.effective_user.id, amount)
+        new_balance = db.get_balance(update.effective_user.id)
+        await update.message.reply_text(f"✅ Добавлено {amount} 💰\nНовый баланс: {new_balance}")
+    except (IndexError, ValueError):
+        await update.message.reply_text("Использование: /addmoney <сумма>")
+
 async def handle_roulette_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка ввода числа для рулетки"""
     if not context.user_data.get('waiting_number'):
