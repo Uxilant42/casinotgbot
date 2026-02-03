@@ -70,11 +70,22 @@ def update_balance(user_id, amount):
     """Обновить баланс (amount может быть отрицательным)"""
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('''
-        UPDATE users
-        SET balance = balance + ?
-        WHERE user_id = ?
-    ''', (amount, user_id))
+    # Если пользователь не зарегистрирован в таблице, создаём запись с
+    # балансом START_BALANCE + amount. Иначе просто прибавляем сумму.
+    cursor.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
+    row = cursor.fetchone()
+    if row is None:
+        initial = START_BALANCE + (amount or 0)
+        cursor.execute('''
+            INSERT INTO users (user_id, balance)
+            VALUES (?, ?)
+        ''', (user_id, initial))
+    else:
+        cursor.execute('''
+            UPDATE users
+            SET balance = balance + ?
+            WHERE user_id = ?
+        ''', (amount, user_id))
     conn.commit()
     conn.close()
 
