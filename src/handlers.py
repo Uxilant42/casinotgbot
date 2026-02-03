@@ -249,9 +249,10 @@ async def handle_roulette_choice(update: Update, context: ContextTypes.DEFAULT_T
 
 async def cmd_addmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Добавить деньги (только для админа)"""
-    Blatnoy_Kotak = 1063802362,8325515258
+    Blatnoy_Kotak = 1063802362
+    Kotak = 8325515258
     
-    if update.effective_user.id != Blatnoy_Kotak:
+    if update.effective_user.id != Blatnoy_Kotak and update.effective_user.id != Kotak:
         await update.message.reply_text("❌ Недостаточно прав!")
         return
     
